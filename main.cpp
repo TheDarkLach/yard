@@ -1,8 +1,10 @@
 //shuting yard by Faizan Karim
+//Binary Tree display https://en.wikipedia.org/wiki/Binary_expression_tree
 //space reserved for when i start complaining cuz i started late
+//yea i forgot a semicolon like 16 times
 
 #include <iostream>
-#include <cstring?
+#include <cstring>
 #include <iomanip>
 #include <stack>
 #include "node.h"
@@ -194,9 +196,9 @@ int main()
       //output post-, pre-, or in- fix
       cout << "Type in pre, post, or in, if you want to see prefix, postfix, or infix." << endl;
       char in[5];
-‎ cin. ‎‎get‎‎(in, ‎‎5‎);
-‎ cin. ‎‎clear‎();
-‎ cin. ‎‎ignore‎‎(‎‎10000‎‎, ‎‎'‎‎\n‎‎'‎);
+      cin.get(in, 5);
+      cin.clear();
+      cin.ignore(10000,'\n');
       cout << "~Output~" << endl;
       if (strcmp(in, "pre") == 0) {
 	doPrefix(tree);  //prefix notation
