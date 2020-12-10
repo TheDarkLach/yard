@@ -218,3 +218,185 @@ int main()
     }
   }
 }
+
+int precedence(char* op) {
+  if (*op == '^') {
+    return 3;  //highest precedence
+  } else if (*op == '*' || *op == '/') {
+    return 2; //second highest precedence
+  } else if (*op == '+' || *op == '-') {
+    return 1;  //second lowest precedence
+  } else if (*op == '(' || *op == ')') {
+    return 4;  //whatever value, just different
+  }
+  else {
+    return 0; //number has lowest precedence
+  }
+}
+
+bool isempty(Node* top) {  //check stack
+  if (top == NULL) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+//push function to add new element at end of stack  --  thanks CodeWhoop vid
+void push (Node* &top, char* val) {
+  Node* ptr = new Node();
+  ptr->setData(val);
+  ptr->setNext(top);
+  top = ptr;
+}
+
+//pop function to remove newst added element
+void pop(Node* &top) {
+  if (isempty(top)) {
+    cout << "Stack is empty." << endl;
+  } else {
+    Node* ptr = top;
+    top = top->getNext();
+    ptr->setNext(NULL);
+  }
+}
+
+//WOW this is useless, i already have the top, WHAt am i doing
+Node* peek(Node* &top) {
+  if (isempty(top)) {
+    cout << "Stack is empty." << endl;
+    Node* no = new Node();
+    return no;
+  } else {
+    return top;
+  }
+}
+
+//add node to queue  --  thanks CodeWhoop
+void enqueue(Node* &front, Node* &rear, char* val) {
+  Node* ptr = new Node();
+  ptr->setData(val);
+  ptr->setNext(NULL);
+  if (front == NULL) {  //no node yet
+    front = ptr;
+    rear = ptr;
+  } else {  //one or more nodes existent
+    rear->setNext(ptr);
+    rear = ptr;
+  }
+}
+
+//remove first node in queue
+void dequeue(Node* &front, Node* & rear) {
+  if(isEmpty(front, rear)) {
+    cout << "Queue is empty." << endl;
+  } else if (front == rear) {  //if one node
+    //delete existent node
+    front = NULL;
+    rear = NULL;
+  } else {
+    Node* ptr = front;
+    front = front->getNext();
+    ptr->setNext(NULL);
+  }
+}
+
+//check if queue is empty
+bool isEmpty (Node* front, Node* rear) {
+  if (front == NULL && rear == NULL) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void showFront(Node* front, Node* rear) {
+  if (isEmpty(front, rear)) {
+    cout << "Queue is empty." << endl;
+  } else {
+    cout << front->getData();
+  }
+}
+
+void displayQueue(Node* front, Node* rear) {
+  if(isEmpty(front, rear)) {  //empty queue
+    cout << "Queue is empty." << endl;
+  } else {
+    Node* ptr = front;
+    while (ptr != NULL) {
+      cout << ptr->getData() << " ";
+      ptr = ptr->getNext();
+    }
+    cout << endl;
+  }
+}
+
+//tree functions
+
+void pushT(Node* &tree, Node* &add) {
+  if (tree == NULL) {  //empty tree stack
+    add->setNext(tree);
+    tree = add;
+  } else {
+    if (precedence(add->getData()) == 0) {  //if a number
+      add->setNext(tree);
+      tree = add;
+    } else {  //if an operator
+      //pop last two nodes and keep them
+      Node* l = tree;
+      popT(tree);
+      l->setNext(NULL);
+      Node* r = tree;
+      popT(tree);
+      r->setNext(NULL);
+      //push operator node
+      add->setNext(tree);
+      tree = add;
+      //make the two popped numbers left and right pointers of operator node
+      tree->setLeft(l);
+      tree->setRight(r);
+    }
+  }
+}
+
+void popT(Node* &tree) {
+  if (tree == NULL) {
+    cout << "Tree stack empty." << endl;
+  } else {
+    Node* ptr = tree;
+    tree = tree->getNext();
+    ptr->setNext(NULL);
+  }
+}
+
+//display final tree -- thanks Wikipedia
+
+void doPrefix(Node* t) {
+  if (t != NULL) {
+    cout << t->getData() << " ";
+    doPrefix(t->getLeft());
+    doPrefix(t->getRight());
+  }
+}
+
+void doPostfix(Node* t) {
+  if(t != NULL) {
+    doPostfix(t->getLeft());
+    doPostfix(t->getRight());
+    cout << t->getData() << " ";
+  }
+}
+
+void doInfix(Node* t) {
+  if (t != NULL) {
+    if (precedence(t->getData()) != 0) {
+      cout << "( ";
+    }
+    doInfix(t->getLeft());
+    cout << t->getData() << " ";
+    doInfix(t->getRight());
+    if (precedence(t->getData()) != 0) {
+      cout << ") ";
+    }
+  }
+}
