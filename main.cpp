@@ -41,4 +41,13 @@ int main()
   Node* top = NULL;
   Node* front = NULL;  
   Node* rear = NULL;
+
+  bool run = true;
+  char input[100];
+  char in[10];
+
+  while(run)
+  {
+    
+  }
 }
